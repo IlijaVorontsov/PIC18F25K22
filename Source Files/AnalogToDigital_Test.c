@@ -11,7 +11,7 @@ Created on 10. Juli 2017, 12:48
 #include "setTMR0.h"
 
 //initializing functions
-void init(void);
+void Setup(void);
 void interrupt isr(void);
 
 //assigning variables
