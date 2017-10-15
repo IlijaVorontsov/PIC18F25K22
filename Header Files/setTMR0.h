@@ -44,9 +44,9 @@ long setPreScaler(long t){
 
   //Setting prescaler
   if(PreScaler > 1){
-    T0CON = HighBitCounter;
+      T0CON = HighBitCounter;
   }else{
-      T0CON = 8;
+      T0CON = 0b00001000;
     }
   return(PreScaler);
   }
