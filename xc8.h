@@ -1,12 +1,17 @@
-
-// PIC18F25K22 Configuration Bit Settings
-
-// 'C' source line config statements
-
+/*
+Generated with SetConfiguartionBits.
+        PIC18F25K22 Configuration Bit Settings
+        'C' source line config statements
+!!! Change _XTAL_FREQ to your oscillators frequency. !!!
+*/
 #include <xc.h>
+
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
+
+// External oscillator frequency
+#define _XTAL_FREQ 11059200
 
 // CONFIG1H
 #pragma config FOSC = XT        // Oscillator Selection bits (XT oscillator)
@@ -67,6 +72,3 @@
 
 // CONFIG7H
 #pragma config EBTRB = OFF      // Boot Block Table Read Protection bit (Boot Block (000000-0007FFh) not protected from table reads executed in other blocks)
-
-
-#define _XTAL_FREQ 11059200
