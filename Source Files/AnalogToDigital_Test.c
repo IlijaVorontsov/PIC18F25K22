@@ -45,17 +45,23 @@ void Setup(void){
 void interrupt isr(void){
     //Chacking if
     if(TMR0IE && TMR0IF){
-
+        //Disabling other interrupts stopping timer0 and reseting flagBit.
         TMR0ON = 0;
         TMR0IF=0;
-
         GIE=0;
+
+        //Setting up time for new interrupt
         setTMR0_ms(20);
+        // ADC routine
         if (GODONE == 0){
             AnalogRead = ADRESH;
-            GODONE = 1;        //Starts conversion
+            GODONE = 1;
         }
+
+
         LATC = AnalogRead;
+
+        //Enableing other interrupts and starting timer0
         GIE=1;
         TMR0ON=1;
    }
