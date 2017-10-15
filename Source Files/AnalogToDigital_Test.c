@@ -35,7 +35,7 @@ void Setup(void){
     TMR0L =   0b11111111;
     TMR0H =   0b11111111;
     LATA =    0b00000000;
-    INCON =   0b11100000;
+    INTCON =  0b11100000;
     ADCON0 =  0b00000001;
     ADCON2 =  0b00111111;
 }
