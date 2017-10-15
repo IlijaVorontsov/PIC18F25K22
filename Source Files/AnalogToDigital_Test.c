@@ -43,7 +43,7 @@ void Setup(void){
 
 //Interrupt Service Routine
 void interrupt isr(void){
-    //Chacking if
+    //Checking if Timer0 interrupt was triggerd.
     if(TMR0IE && TMR0IF){
 
         //Disabling other interrupts stopping timer0 and reseting flagBit.
