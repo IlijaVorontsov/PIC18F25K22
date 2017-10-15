@@ -1,7 +1,8 @@
 /*
-File:   Tryout.c
-Author: Ilija
-
+File:         Tryout.c
+Author:       Ilija Vorontsov
+Discription:  The 8Bit value of a potentiometer is determined by an ADC and
+              displayed on PORTC.
 Created on 10. Juli 2017, 12:48
 */
 
@@ -15,7 +16,6 @@ void interrupt isr(void);
 
 //assigning variables
 unsigned char i;
-long AnalogRead ;
 
 //Starting setup and endlessloop
 void main(void) {
@@ -45,21 +45,20 @@ void Setup(void){
 void interrupt isr(void){
     //Chacking if
     if(TMR0IE && TMR0IF){
+
         //Disabling other interrupts stopping timer0 and reseting flagBit.
         TMR0ON = 0;
         TMR0IF=0;
         GIE=0;
 
-        //Setting up time for new interrupt
+        //Setting up time for new interrupt.
         setTMR0_ms(20);
-        // ADC routine
+
+        // ADC routine and setting LED´s on PORTC to the ADC result.
         if (GODONE == 0){
-            AnalogRead = ADRESH;
+            LATC = ADRESH;
             GODONE = 1;
         }
-
-
-        LATC = AnalogRead;
 
         //Enableing other interrupts and starting timer0
         GIE=1;
