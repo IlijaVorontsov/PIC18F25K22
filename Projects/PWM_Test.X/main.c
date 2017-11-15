@@ -1,9 +1,10 @@
 /*
-File:         Tryout.c
-Author:       Ilija Vorontsov
-Discription:  The 8Bit value of a potentiometer is determined by an ADC and
-              displayed on PORTC.
-Created on 10. Juli 2017, 12:48
+File:           PWM_Test.c
+Author:         Ilija Vorontsov
+Description:    An analog value should be converted to a digital 10 bit value.
+ *              The digital value should be displayed by the duty cycle of the 
+ *              PWM output on RC2.
+Created:        15. November 2017
 */
 
 //including needed header files
@@ -17,7 +18,7 @@ void interrupt isr(void);
 //assigning variables
 unsigned char i;
 
-//Starting setup and endlessloop
+//Starting setup and endless loop
 void main(void) {
     Setup();
 
@@ -27,7 +28,7 @@ void main(void) {
     }
 }
 
-//Setting up all used Special Funciton Registers.
+//Setting up all used Special Function Registers.
 void Setup(void){
     TRISC =   0b00000000;
     ANSELC =  0b00000000;
@@ -44,6 +45,27 @@ void Setup(void){
 }
 
 
+void PWM_Setup(void){
+    
+    //Setting RC2 to CCP1 mode but disabling output
+    TRISCbits.RC2 = 1;   
+    ANSELCbits.ANSC2 = 0;
+    
+    
+    CCPTMRS0bits.C1TSEL = 0b00;     //selecting Timer2 as Timer source for CCP1
+    CCP1CONbits.CCP1M = 0b1100;     //selecting PWM Mode for CPP1
+    PR2 = 0b11011111;               //setting the Period Register of Timer2
+    T2CONbits.T2CKPS = 0b10;        //setting PreScaler of Timer2 to 16
+    
+    //loading Duty-Cycle value
+    CCPR1 = 0b11111111;         //Bits 10-2
+    CCP1CONbits.DC1B = 0b11;    //Bits 1-0
+    
+    
+    PIR1bits.TMR2IF = 0;
+    T2CONbits.TMR2ON = 1;
+}
+
 //Interrupt Service Routine
 void interrupt isr(void){
     //Checking if Timer0 interrupt was triggerd.
@@ -57,13 +79,13 @@ void interrupt isr(void){
         //Setting up time for new interrupt.
         setTMR0_ms(20);
 
-        // ADC routine and setting LED´s on PORTC to the ADC result.
+        // ADC routine and setting LEDï¿½s on PORTC to the ADC result.
         if (GODONE == 0){
             LATC = ADRESH;
             GODONE = 1;
         }
 
-        //Enableing other interrupts and starting timer0
+        //enabling other interrupts and starting timer0
         GIE=1;
         TMR0ON=1;
    }
