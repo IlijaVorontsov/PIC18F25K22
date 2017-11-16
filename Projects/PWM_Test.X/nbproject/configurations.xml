@@ -24,6 +24,8 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>../../../../../../../Program Files (x86)/Microchip/xc8/v1.41/include</Elem>
+    <Elem>../../../../../../../Program Files (x86)/Microchip/xc8/v1.41/docs/chips</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

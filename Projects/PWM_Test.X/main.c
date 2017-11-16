@@ -14,6 +14,7 @@ Created:        15. November 2017
 //initializing functions
 void Setup(void);
 void interrupt isr(void);
+void PWM_Setup(void);
 
 //assigning variables
 unsigned char i;
@@ -21,7 +22,7 @@ unsigned char i;
 //Starting setup and endless loop
 void main(void) {
     Setup();
-
+    PWM_Setup();
     while(1){
     
     
@@ -54,16 +55,18 @@ void PWM_Setup(void){
     
     CCPTMRS0bits.C1TSEL = 0b00;     //selecting Timer2 as Timer source for CCP1
     CCP1CONbits.CCP1M = 0b1100;     //selecting PWM Mode for CPP1
-    PR2 = 0b11011111;               //setting the Period Register of Timer2
-    T2CONbits.T2CKPS = 0b10;        //setting PreScaler of Timer2 to 16
+    PR2 = 0b11111111;               //setting the Period Register of Timer2
+    T2CONbits.T2CKPS = 0b00;        //setting PreScaler of Timer2 to 16
+    
     
     //loading Duty-Cycle value
     CCPR1 = 0b11111111;         //Bits 10-2
     CCP1CONbits.DC1B = 0b11;    //Bits 1-0
     
-    
+    PIE1bits.TMR2IE = 1;
     PIR1bits.TMR2IF = 0;
     T2CONbits.TMR2ON = 1;
+    TRISCbits.RC2 = 0;  
 }
 
 //Interrupt Service Routine
@@ -79,12 +82,8 @@ void interrupt isr(void){
         //Setting up time for new interrupt.
         setTMR0_ms(20);
 
-        // ADC routine and setting LED�s on PORTC to the ADC result.
-        if (GODONE == 0){
-            LATC = ADRESH;
-            GODONE = 1;
-        }
 
+        
         //enabling other interrupts and starting timer0
         GIE=1;
         TMR0ON=1;
